@@ -4,4 +4,4 @@ forge-std/=node_modules/forge-std/src/
 @gnosis.pm/safe-contracts/=node_modules/@gnosis.pm/safe-contracts/
 @gnosis-guild/zodiac/=node_modules/@gnosis-guild/zodiac/
 solady/=node_modules/solady/
-cowprotocol/=node_modules/cowprotocol/
+cowprotocol/=node_modules/@cowprotocol/
