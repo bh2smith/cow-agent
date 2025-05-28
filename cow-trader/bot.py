@@ -51,24 +51,26 @@ def _get_contract_address(contract_key: str, chain_id: int = 100) -> str:
 
 
 # Addresses
+CHAIN_ID = os.environ.get("CHAIN_ID", 100)
 GPV2_SETTLEMENT_ADDRESS = "0x9008D19f58AAbD9eD0D60971565AA8510560ab41"
 TOKEN_ALLOWLIST_ADDRESS = os.environ.get(
-    "TOKEN_ALLOWLIST_ADDRESS", _get_contract_address("allowlist", 100)
+    "TOKEN_ALLOWLIST_ADDRESS", _get_contract_address("allowlist", CHAIN_ID)
 )
-SAFE_ADDRESS = os.environ.get("SAFE_ADDRESS", _get_contract_address("safe", 100))
+SAFE_ADDRESS = os.environ.get("SAFE_ADDRESS", _get_contract_address("safe", CHAIN_ID))
 TRADING_MODULE_ADDRESS = os.environ.get(
-    "TRADING_MODULE_ADDRESS", _get_contract_address("tradingModuleProxy", 100)
+    "TRADING_MODULE_ADDRESS", _get_contract_address("tradingModuleProxy", CHAIN_ID)
 )
 
-GNO = "0x9C58BAcC331c9aa871AFD802DB6379a98e80CEdb"
-COW = "0x177127622c4A00F3d409B75571e12cB3c8973d3c"
-WXDAI = "0xe91D153E0b41518A2Ce8Dd3D7944Fa863463a97d"
-MONITORED_TOKENS = [GNO, COW, WXDAI]
+BTC = "0xcbb7c0000ab88b473b1f5afd9ef808440eed33bf"
+WETH = "0x4200000000000000000000000000000000000006"
+USDC = "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+MONITORED_TOKENS = [BTC, WETH, USDC]
 
+# 1 dollar in erespective token.
 MINIMUM_TOKEN_BALANCES = {
-    GNO: 55e14,
-    COW: 10e18,
-    WXDAI: 5e18,
+    BTC: 100,
+    WETH: 400000000000000,
+    USDC: 1000000,
 }
 
 
@@ -235,9 +237,9 @@ trading_agent = Agent(
 )
 
 TOKEN_NAMES = {
-    GNO: "GNO",
-    COW: "COW",
-    WXDAI: "WXDAI",
+    BTC: "BTC",
+    WETH: "WETH",
+    USDC: "USDC",
 }
 
 
@@ -820,6 +822,7 @@ def bot_startup(startup_state: StateSnapshot):
     else:
         bot.state.next_decision_block = decisions_df.iloc[-1].block_number + TRADING_BLOCK_COOLDOWN
 
+    # TODO: set bot.state.token_list via TOKEN_ALLOWLIST_CONTRACT.allowedTokens
     bot.state.can_trade = False
     bot.state.sell_token = None
 

@@ -15,13 +15,13 @@ You appreciate that trading is nuanced, and that it is about:
 
 Your job is to analyze market conditions and decide whether to trade.
 
-Here is some historical canonical price information for COW and GNO from the past year:
-- COW
-  - High: 1.16 COW/WXDAI
-  - Low: 0.15 COW/WXDAI.
-- GNO
-  - High: 445 GNO/WXDAI. 
-  - Low: 140 GNO/WXDAI.
+Here is some historical canonical price information for WTBC and WETH from the past year:
+- WBTC
+  - High: 110000 WBTC/USDC
+  - Low: 60000 WBTC/USDC.
+- WETH
+  - High: 4000 GNO/USDC.
+  - Low: 1500 GNO/USDC.
 Please use this prices as additional context for interpreting the current prices.
 
 

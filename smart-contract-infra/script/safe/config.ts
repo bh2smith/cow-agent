@@ -5,6 +5,8 @@ import Safe from "@safe-global/protocol-kit";
 import fs from "fs";
 import path from "path";
 
+const ALCHEMY_KEY = process.env.WEB3_ALCHEMY_PROJECT_ID;
+
 export const SIGNER_PRIVATE_KEY = process.env.PRIVATE_KEY as `0x${string}`;
 if (!SIGNER_PRIVATE_KEY) {
   throw new Error("Please set your PRIVATE_KEY env variable");
@@ -14,10 +16,10 @@ export const SIGNER_ACCOUNT = privateKeyToAccount(SIGNER_PRIVATE_KEY);
 type ChainIds = 42161 | 8453 | 100 | 1 | 11155111 | 31337;
 
 export const RPC_URLS: Record<ChainIds, string> = {
-  [arbitrum.id]: "https://rpc.ankr.com/arbitrum",
-  [base.id]: "https://rpc.ankr.com/base",
-  [gnosis.id]: "https://rpc.ankr.com/gnosis",
-  [mainnet.id]: "https://rpc.ankr.com/eth",
+  [arbitrum.id]: `https://arb-mainnet.g.alchemy.com/v2/${ALCHEMY_KEY}`,
+  [base.id]: `https://base-mainnet.g.alchemy.com/v2/${ALCHEMY_KEY}`,
+  [gnosis.id]: `https://gnosis-mainnet.g.alchemy.com/v2/${ALCHEMY_KEY}`,
+  [mainnet.id]: `https://eth-mainnet.g.alchemy.com/v2/${ALCHEMY_KEY}`,
   [sepolia.id]: "https://rpc2.sepolia.org",
   [anvil.id]: "http://localhost:8545",
 };

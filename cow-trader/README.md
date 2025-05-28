@@ -31,7 +31,7 @@ Before running the bot, ensure you've set up an account alias as outlined in the
 Once your account alias is ready (e.g. `cow-agent`), you can run the bot:
 
 ```bash
-silverback run --network gnosis:mainnet:alchemy --account cow-agent
+silverback run --network base:mainnet:alchemy --account cow-agent
 ```
 
 This command uses the alias you configured as the signer. There will be a prompt asking if you want to enable auto-signing.

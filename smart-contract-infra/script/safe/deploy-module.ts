@@ -1,4 +1,4 @@
-import { type Chain, type Address, encodeAbiParameters, encodeFunctionData, parseAbiParameters } from "viem";
+import { type Address, encodeAbiParameters, encodeFunctionData, parseAbiParameters } from "viem";
 import { SIGNER_ACCOUNT, getWalletClient, updateContractsJson, getContractAddress, CHAIN } from "./config";
 import { TRADING_MODULE_ABI, MODULE_PROXY_FACTORY_ABI } from "../../deployments/abis";
 
@@ -48,3 +48,5 @@ async function deployModule(
 }
 
 export { deployModule };
+
+// deployModule("0x08aEAB970F43276a5dB95FB132A9c2eEE60dA206").then(() => console.log("iz guud")).catch((err) => console.log("iz not good", err.toString()));

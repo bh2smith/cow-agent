@@ -10,6 +10,6 @@ plugins:
   - name: solidity
     version: 0.8.5
 
-gnosis:
+base:
   mainnet:
     transaction_acceptance_timeout: 120 # 2 minutes
