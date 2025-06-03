@@ -939,9 +939,6 @@ def make_trading_decision(block: BlockAPI, context: Annotated[Context, TaskiqDep
     click.echo(f"[{block.number}] Running agent with sell_token={bot.state.sell_token}...")
     deps = AgentDependencies(trade_ctx=trade_ctx, sell_token=bot.state.sell_token)
 
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-
     result = context.state.agent.run_sync(
         "Analyze current market conditions and make a trading decision", deps=deps
     )
