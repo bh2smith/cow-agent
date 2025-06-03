@@ -4,7 +4,12 @@ version = "0.1.0"
 description = "Automated CoW Swap trading agent built with Silverback SDK"
 readme = "README.md"
 requires-python = ">=3.10,<3.11"
-dependencies = ["eth-ape>=0.8.31", "pydantic-ai>=0.0.23", "silverback>=0.7.24"]
+dependencies = [
+    "eth-ape>=0.8.31",
+ "nest-asyncio>=1.6.0",
+ "pydantic-ai>=0.2.0",
+ "silverback>=0.7.24",
+]
 
 [tool.uv]
 dev-dependencies = ["pre-commit>=4.0.1", "ruff>=0.9.1"]

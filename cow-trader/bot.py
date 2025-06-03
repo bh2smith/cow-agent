@@ -17,7 +17,9 @@ from pydantic import BaseModel
 from pydantic_ai import Agent, RunContext
 from silverback import SilverbackBot, StateSnapshot
 from taskiq import Context, TaskiqDepends, TaskiqState
+import nest_asyncio
 
+nest_asyncio.apply()
 # Initialize bot
 bot = SilverbackBot()
 
@@ -954,15 +956,9 @@ def make_trading_decision(block: BlockAPI, context: Annotated[Context, TaskiqDep
         # Create a new event loop for this synchronous operation
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
-    try:
-        result = context.state.agent.run_sync(
+    result = context.state.agent.run_sync(
             "Analyze current market conditions and make a trading decision", deps=deps
         )
-    finally:
-        loop.close()
-    # result = context.state.agent.run_sync(
-    #     "Analyze current market conditions and make a trading decision", deps=deps
-    # )
 
     click.echo(
         f"[{block.number}] Agent: trade={result.data.should_trade}, buy={result.data.buy_token}"
