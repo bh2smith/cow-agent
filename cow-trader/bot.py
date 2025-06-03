@@ -826,7 +826,10 @@ def bot_startup(startup_state: StateSnapshot):
     bot.state.can_trade = False
     bot.state.sell_token = None
 
-    return {"message": "Starting...", "block_number": startup_state.last_block_seen}
+    return {
+        # "message": "Starting...", 
+        "block_number": startup_state.last_block_seen
+    }
 
 
 @bot.on_worker_startup()
@@ -847,7 +850,10 @@ def update_state(block: BlockAPI, context: Annotated[Context, TaskiqDepends()]):
 
     if block.number < bot.state.next_decision_block:
         click.echo(f"[{block.number}] Skip - next decision at {bot.state.next_decision_block}")
-        return {"message": "Skipped - before cooldown", "block": block.number}
+        return {
+            # "message": "Skipped - before cooldown", 
+            "block": block.number
+        }
 
     click.echo(f"[{block.number}] Past cooldown, catching up trades...")
     _catch_up_trades(current_block=block.number, next_decision_block=bot.state.next_decision_block)
@@ -857,12 +863,18 @@ def update_state(block: BlockAPI, context: Annotated[Context, TaskiqDepends()]):
 
     if not bot.state.sell_token:
         click.echo(f"[{block.number}] No eligible sell tokens found")
-        return {"message": "No eligible sell tokens", "block": block.number}
+        return {
+            # "message": "No eligible sell tokens", 
+            "block": block.number
+        }
 
     if context.state.decisions_df.empty:
         click.echo(f"[{block.number}] No previous decisions, enabling trading")
         bot.state.can_trade = True
-        return {"message": "No previous decisions", "can_trade": True}
+        return {
+            # "message": "No previous decisions", 
+            "can_trade": True
+        }
 
     latest_decision = context.state.decisions_df.iloc[-1]
     msg = (
@@ -876,7 +888,7 @@ def update_state(block: BlockAPI, context: Annotated[Context, TaskiqDepends()]):
         click.echo(f"[{block.number}] Last decision wasn't a trade, enabling trading")
         bot.state.can_trade = True
         return {
-            "message": "Last decision was not a trade",
+            # "message": "Last decision was not a trade",
             "can_trade": True,
             "last_decision_block": latest_decision.block_number,
         }
@@ -902,7 +914,7 @@ def update_state(block: BlockAPI, context: Annotated[Context, TaskiqDepends()]):
         )
         bot.state.can_trade = True
         return {
-            "message": "Marked as unknown outcome",
+            # "message": "Marked as unknown outcome",
             "block": block.number,
             "can_trade": True,
         }
@@ -915,7 +927,7 @@ def update_state(block: BlockAPI, context: Annotated[Context, TaskiqDepends()]):
     bot.state.can_trade = True
     click.echo(f"[{block.number}] State: trade={bot.state.can_trade}, sell={bot.state.sell_token}")
     return {
-        "message": "Updated previous decision outcome",
+        # "message": "Updated previous decision outcome",
         "can_trade": True,
         "last_decision_block": latest_decision.block_number,
     }
@@ -929,7 +941,7 @@ def make_trading_decision(block: BlockAPI, context: Annotated[Context, TaskiqDep
 
     if not bot.state.can_trade:
         click.echo(f"[{block.number}] Trading not enabled, skipping")
-        return {"message": "Trading not enabled", "block": block.number}
+        return {"block": block.number}
 
     click.echo(f"[{block.number}] Creating trade context...")
     trade_ctx = _create_trade_context(
@@ -939,9 +951,18 @@ def make_trading_decision(block: BlockAPI, context: Annotated[Context, TaskiqDep
     click.echo(f"[{block.number}] Running agent with sell_token={bot.state.sell_token}...")
     deps = AgentDependencies(trade_ctx=trade_ctx, sell_token=bot.state.sell_token)
 
-    result = context.state.agent.run_sync(
-        "Analyze current market conditions and make a trading decision", deps=deps
-    )
+        # Create a new event loop for this synchronous operation
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    try:
+        result = context.state.agent.run_sync(
+            "Analyze current market conditions and make a trading decision", deps=deps
+        )
+    finally:
+        loop.close()
+    # result = context.state.agent.run_sync(
+    #     "Analyze current market conditions and make a trading decision", deps=deps
+    # )
 
     click.echo(
         f"[{block.number}] Agent: trade={result.data.should_trade}, buy={result.data.buy_token}"
@@ -975,7 +996,7 @@ def make_trading_decision(block: BlockAPI, context: Annotated[Context, TaskiqDep
     click.echo(f"[{block.number}] Next decision: {bot.state.next_decision_block}")
 
     return {
-        "message": "Trading decision made",
+        # "message": "Trading decision made",
         "block": block.number,
         "should_trade": decision.should_trade,
         "sell_token": decision.sell_token,
