@@ -232,9 +232,9 @@ class AgentDecision(BaseModel):
 
 
 trading_agent = Agent(
-    "anthropic:claude-3-sonnet-20240229",
+    "gpt-4o-mini",
     deps_type=AgentDependencies,
-    result_type=AgentResponse,
+    output_type=AgentResponse,
     system_prompt=SYSTEM_PROMPT,
 )
 
@@ -941,7 +941,7 @@ def make_trading_decision(block: BlockAPI, context: Annotated[Context, TaskiqDep
     click.echo(f"\n[{block.number}] Starting trading decision...")
     click.echo(f"[{block.number}] State: trade={bot.state.can_trade}, sell={bot.state.sell_token}")
 
-    if not bot.state.can_trade:
+    if not bot.state.can_trade or block.number % 10 != 0:
         click.echo(f"[{block.number}] Trading not enabled, skipping")
         return {"block": block.number}
 
