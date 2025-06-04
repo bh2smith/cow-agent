@@ -91,7 +91,7 @@ TRADING_MODULE_CONTRACT = Contract(TRADING_MODULE_ADDRESS, abi=_load_abi("Tradin
 
 
 # API
-API_BASE_URL = "https://api.cow.fi/xdai/api/v1"
+API_BASE_URL = "https://api.cow.fi/base/api/v1"
 API_HEADERS = {"accept": "application/json", "Content-Type": "application/json"}
 
 # Variables
@@ -270,7 +270,7 @@ def get_eligible_buy_tokens(ctx: RunContext[AgentDependencies]) -> List[str]:
 def get_token_type(token: str) -> Dict:
     """Determine if the token is stable or volatile."""
     try:
-        is_stable = token == WXDAI
+        is_stable = token == USDC
         return {
             "token": get_token_name(token),
             "is_stable": is_stable,

@@ -53,7 +53,7 @@ Foundry deploy scripts include:
 **Token Configuration Script:**
 
 - `script/01A_AddTokens_Allowlist.s.sol`  
-  This script configures the allowlist with the GNO, WXDAI, and COW tokens.
+  This script configures the allowlist with the GNO, USDC, and COW tokens.
 
 ### Bun Deploy Scripts for Users/Agents
 

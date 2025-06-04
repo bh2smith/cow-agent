@@ -24,7 +24,7 @@ contract AddTokensScript is ScriptUtils {
         address[] memory tokens = new address[](3);
         tokens[0] = GNO;
         tokens[1] = COW;
-        tokens[2] = WXDAI;
+        tokens[2] = USDC;
 
         allowlist.addTokensBatch(tokens);
 
